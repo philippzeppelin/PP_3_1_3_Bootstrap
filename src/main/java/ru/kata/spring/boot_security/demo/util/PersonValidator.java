@@ -9,34 +9,36 @@ import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 @Component
-public class PersonValidator implements Validator {
-    private final UserService userService;
+public class PersonValidator {}
 
-    @Autowired
-    public PersonValidator(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return User.class.equals(clazz);
-    }
-
-    @Override
-    public void validate(Object target, Errors errors) {
-        User user = (User) target;
-
-        try {
-            userService.loadUserByUsername(user.getUsername());
-        } catch (UsernameNotFoundException e) {
-            System.out.println("Пользователь с таким именем не найден");
-            return;
-        }
-
-        errors.rejectValue(
-                "username",
-                "",
-                "Человек с таким именем пользователя уже существует"
-        );
-    }
-}
+//public class PersonValidator implements Validator {
+//    private final UserService userService;
+//
+//    @Autowired
+//    public PersonValidator(UserService userService) {
+//        this.userService = userService;
+//    }
+//
+//    @Override
+//    public boolean supports(Class<?> clazz) {
+//        return User.class.equals(clazz);
+//    }
+//
+//    @Override
+//    public void validate(Object target, Errors errors) {
+//        User user = (User) target;
+//
+//        try {
+//            userService.loadUserByUsername(user.getUsername());
+//        } catch (UsernameNotFoundException e) {
+//            System.out.println("Пользователь с таким именем не найден");
+//            return;
+//        }
+//
+//        errors.rejectValue(
+//                "username",
+//                "",
+//                "Человек с таким именем пользователя уже существует"
+//        );
+//    }
+//}
