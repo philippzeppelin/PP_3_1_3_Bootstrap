@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.services.Impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,11 +11,9 @@ import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import ru.kata.spring.boot_security.demo.security.UserEntityDetails;
 
-import java.util.Optional;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
@@ -22,18 +21,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
 
-        if (user.isEmpty()) {
+        if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
-        User foundUser = user.get();
-        foundUser.getRoles().size();
+        Hibernate.initialize(user.getRoles());
 
-//        return new UserEntityDetails(user.get());
-        return new UserEntityDetails(foundUser);
+        return new UserEntityDetails(user);
     }
 }
