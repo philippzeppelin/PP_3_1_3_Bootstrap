@@ -2,11 +2,18 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User details</title>
+    <title>Show</title>
 </head>
+
 <body>
 
-Здесь будут данные по пользователю: id, username, email
+<p th:text="'ID: ' + ${user.getId()}">VALUE</p>
+<p th:text="'Username: ' + ${user.getUsername()}">VALUE</p>
+<p th:text="'Email: ' + ${user.getEmail()}">VALUE</p>
+
+<br/>
+
+<a href="/logout">Logout</a>
 
 </body>
 </html>

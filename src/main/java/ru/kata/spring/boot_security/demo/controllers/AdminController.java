@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.nio.file.AccessDeniedException;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController { // TODO Админский контроллер
@@ -50,14 +52,21 @@ public class AdminController { // TODO Админский контроллер
 
     @PatchMapping("/{id}") // TODO исправить баг с редактированием пользователя
     // There was an unexpected error (type=Method Not Allowed, status=405).
-    public String updateUser(@ModelAttribute("user") User user,
+    public String updateUser(@ModelAttribute("user") User updatedUser,
                              BindingResult bindingResult,
                              @PathVariable("id") long id) {
         if (bindingResult.hasErrors()) {
             return "admin/edit";
         }
 
-        userService.updateUser(id, user);
+        User existingUser = userService.findUserById(id);
+
+        existingUser.setUsername(updatedUser.getUsername());
+        existingUser.setEmail(updatedUser.getEmail());
+
+        userService.saveUser(existingUser);
+
+//        userService.updateUser(id, user);
 
         return "redirect:/admin";
     }
@@ -75,9 +84,9 @@ public class AdminController { // TODO Админский контроллер
 
         return "redirect:/admin";
     }
-}
 
-/**
- * Все CRUD-операции и страницы для них должны быть доступны только
- * пользователю с ролью admin по url: /admin/.
- */
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleAccessDeniedException() {
+        return "redirect:/access_denied";
+    }
+}
