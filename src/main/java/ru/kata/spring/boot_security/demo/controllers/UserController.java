@@ -20,6 +20,10 @@ public class UserController {
         this.userService = userService;
     }
 
+//    @GetMapping("/login")
+//    public String showLogin() {
+//        return "auth/login";
+//    }
 
     @GetMapping
     public String showUserDetails(Object target, Model model, Principal principal) {

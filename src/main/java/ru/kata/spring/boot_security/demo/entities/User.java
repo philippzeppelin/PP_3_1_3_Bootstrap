@@ -18,6 +18,15 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column(name = "age")
+    private int age;
+
     @Column(name = "username")
     private String username;
 
@@ -36,7 +45,10 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, String email) {
+    public User(String firstName, String lastName, int age, String username, String password, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -48,6 +60,30 @@ public class User implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) { // TODO: нужно name, secondName и age сделать в Edit
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     @Override
@@ -100,10 +136,13 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
+                "email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", age=" + age +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", id=" + id +
                 '}';
     }
 

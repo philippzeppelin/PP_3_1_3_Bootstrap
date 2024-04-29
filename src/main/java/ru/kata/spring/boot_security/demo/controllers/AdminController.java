@@ -20,6 +20,11 @@ public class AdminController { // TODO Админский контроллер
         this.userService = userService;
     }
 
+//    @GetMapping("/login")
+//    public String showLogin() {
+//        return "auth/login";
+//    }
+
     @GetMapping
     public String showAllUsers(Model model) {
         model.addAttribute("users", userService.findAll());
