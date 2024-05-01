@@ -57,7 +57,7 @@ public class AdminController {
 
     @PatchMapping("/{id}")
     public String updateUser(@ModelAttribute("user") User updatedUser,
-                             @RequestParam("roles") Set<Long> roleIds,
+//                             @RequestParam("roles") Set<Long> roleIds,
                              @PathVariable("id") long id) {
         Set<Role> roles = roleService.getRoleSet();
         updatedUser.setRoles(roles);
