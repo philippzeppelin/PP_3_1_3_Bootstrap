@@ -18,10 +18,10 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "age")
@@ -66,7 +66,7 @@ public class User implements UserDetails {
         return firstName;
     }
 
-    public void setFirstName(String firstName) { // TODO: нужно name, secondName и age сделать в Edit
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -118,6 +118,14 @@ public class User implements UserDetails {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getRolesAsString() {
+        return this.getRoles().stream()
+                .map(role ->
+                    role.getName()
+                            .substring(role.getName().indexOf("_") + 1))
+                .collect(Collectors.joining(" "));
     }
 
     @Override

@@ -5,29 +5,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.entities.User;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import java.nio.file.AccessDeniedException;
+import java.security.Principal;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController { // TODO Админский контроллер
-    private UserService userService;
+public class AdminController {
+    private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
-//    @GetMapping("/login")
-//    public String showLogin() {
-//        return "auth/login";
-//    }
-
     @GetMapping
-    public String showAllUsers(Model model) {
+    public String showAllUsers(Principal principal, Model model) {
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("user", userService.findUserByUsername(principal.getName()));
+        model.addAttribute("roles", roleService.getRoleSet());
 
         return "admin/index";
     }
@@ -45,33 +48,20 @@ public class AdminController { // TODO Админский контроллер
     }
 
     @PostMapping()
-    public String createUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "admin/new";
-        }
-
+    public String addNewUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
 
         return "redirect:/admin";
     }
 
-    @PatchMapping("/{id}") // TODO исправить баг с редактированием пользователя
-    // There was an unexpected error (type=Method Not Allowed, status=405).
+
+    @PatchMapping("/{id}")
     public String updateUser(@ModelAttribute("user") User updatedUser,
-                             BindingResult bindingResult,
+                             @RequestParam("roles") Set<Long> roleIds,
                              @PathVariable("id") long id) {
-        if (bindingResult.hasErrors()) {
-            return "admin/edit";
-        }
-
-        User existingUser = userService.findUserById(id);
-
-        existingUser.setUsername(updatedUser.getUsername());
-        existingUser.setEmail(updatedUser.getEmail());
-
-        userService.saveUser(existingUser);
-
-//        userService.updateUser(id, user);
+        Set<Role> roles = roleService.getRoleSet();
+        updatedUser.setRoles(roles);
+        userService.update(id, updatedUser);
 
         return "redirect:/admin";
     }
@@ -83,15 +73,10 @@ public class AdminController { // TODO Админский контроллер
         return "admin/edit";
     }
 
-    @DeleteMapping("/{id}") // TODO Доделать
+    @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
 
         return "redirect:/admin";
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public String handleAccessDeniedException() {
-        return "redirect:/access_denied";
     }
 }
