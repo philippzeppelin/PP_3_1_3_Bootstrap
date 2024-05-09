@@ -1,13 +1,97 @@
 <!doctype html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+    <link href="../css/styles.css" rel="stylesheet">
 </head>
 <body>
-хуй
+
+<!--NAVBAR-->
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#" th:text="${user.getEmail()}">Email</a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active text-white" aria-current="page" href="#">with roles: </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#" th:text="${user.getRolesAsString()}">ROLES</a>
+                </li>
+            </ul>
+
+            <form th:action="@{/logout}" th:method="POST">
+                <button type="submit" class="btn text-secondary">Logout</button>
+            </form>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Колонка для выбора ролей -->
+        <div class="col-md-3">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action active"
+                   id="user-home"
+                   data-bs-toggle="list"
+                   href="#user-page"
+                   role="tab"
+                   aria-controls="home">Admin</a>
+            </div>
+        </div>
+
+        <!-- Колонка с информацией о пользователе -->
+        <div class="col-md-9 gx-5 py-3 tab-content">
+            <div class="tab-pane fade show active" id="user-page" role="tabpanel"
+                 aria-labelledby="user-nav-link" tabindex="0">
+                <h1>User information-page</h1>
+                <div class="tab-content" role="tabpanel" aria-labelledby="user-page">
+                    <div class="card rounded-0">
+                        <h5 class="card-header">About user</h5>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td th:text="${user.getId()}"></td>
+                                <td th:text="${user.getFirstName()}"></td>
+                                <td th:text="${user.getLastName()}"></td>
+                                <td th:text="${user.getAge()}"></td>
+                                <td th:text="${user.getEmail()}"></td>
+                                <td th:text="${user.getRolesAsString()}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 </html>
