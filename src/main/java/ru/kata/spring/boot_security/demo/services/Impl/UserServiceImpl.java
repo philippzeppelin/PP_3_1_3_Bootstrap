@@ -45,26 +45,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(long id, User updatedUser) {
-        Optional<User> optionalUser = userRepository.findById(id);
-
-        if (optionalUser.isEmpty()) {
-            return;
-        }
-
-        User user = optionalUser.get();
-
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        user.setEmail(updatedUser.getEmail());
-        user.setAge(updatedUser.getAge());
-        user.setPassword(updatedUser.getPassword());
-        user.getRoles().clear();
-
-        for (Role role : updatedUser.getRoles()) {
-            user.getRoles().add(role);
-        }
-
-        userRepository.save(user);
+        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        userRepository.save(updatedUser);
     }
 
     @Override

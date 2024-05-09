@@ -3,8 +3,6 @@ package ru.kata.spring.boot_security.demo.entities;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,10 +16,6 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String name;
 
-//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-//            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.LAZY, mappedBy = "roles")
-//    private List<User> userList;
-
     public Role() {
     }
 
@@ -29,14 +23,6 @@ public class Role implements GrantedAuthority {
         this.id = id;
         this.name = name;
     }
-
-//    public void addUserToRoles(User user) {
-//        if (userList == null) {
-//            userList = new ArrayList<>();
-//        }
-//
-//        userList.add(user);
-//    }
 
     public Long getId() {
         return id;
@@ -53,14 +39,6 @@ public class Role implements GrantedAuthority {
     public void setName(String name) {
         this.name = name;
     }
-
-//    public List<User> getUserList() {
-//        return userList;
-//    }
-//
-//    public void setUserList(List<User> userList) {
-//        this.userList = userList;
-//    }
 
     @Override
     public boolean equals(Object o) {

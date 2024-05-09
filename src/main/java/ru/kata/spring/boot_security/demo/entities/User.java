@@ -5,9 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -36,23 +34,39 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany
+    //    @ManyToMany
+//    @JoinTable(name = "users_roles",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    private Set<Role> roles;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, int age, String username, String password, String email) {
+    public User(String firstName, String lastName, int age, String username, String password, String email, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.roles = roles;
     }
+
+//    public void addRoleToUser(Role role) {
+//        if (this.roles == null) {
+//            this.roles = new HashSet<>();
+//        }
+//
+//        if (!this.roles.contains(role)) {
+//            this.roles.add(role);
+//        }
+//    }
 
     public Long getId() {
         return id;
@@ -116,15 +130,15 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
     public String getRolesAsString() {
         return this.getRoles().stream()
                 .map(role ->
-                    role.getName()
-                            .substring(role.getName().indexOf("_") + 1))
+                        role.getName()
+                                .substring(role.getName().indexOf("_") + 1))
                 .collect(Collectors.joining(" "));
     }
 

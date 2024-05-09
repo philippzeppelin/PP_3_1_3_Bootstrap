@@ -13,26 +13,27 @@
     <link href="../css/styles.css" rel="stylesheet">
 </head>
 <body>
+
 <!--NAVBAR-->
 <nav class="navbar navbar-expand-lg bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand text-white" href="#">Email</a>
+        <a class="navbar-brand text-white" href="#" th:text="${user.getEmail()}">Email</a>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <!--                    TODO: Изменить на текст + добавить ссылки через thymeleaf-->
                     <a class="nav-link active text-white" aria-current="page" href="#">with roles: </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">ROLES</a>
+                    <a class="nav-link text-white" href="#" th:text="${user.getRolesAsString()}">ROLES</a>
                 </li>
             </ul>
 
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">ВЫЙТИ</a>
-            </li>
+            <form th:action="@{/logout}" th:method="POST">
+                <button type="submit" class="btn text-secondary">Logout</button>
+            </form>
+
         </div>
     </div>
 </nav>
@@ -128,7 +129,7 @@
                                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Edit user</h1>
 
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Закрыть"></button>
+                                                        aria-label="closeLabel"></button>
                                             </div>
 
                                             <div class="modal-body">
@@ -149,50 +150,53 @@
                                                                 </div>
 
                                                                 <label for="firstName"><b>First name</b></label>
-                                                                <input id="editFirstName"
+                                                                <input id="editFirstName" required
                                                                        class="form-control"
                                                                        placeholder="First name"
                                                                        th:name="firstName"
                                                                        th:type="text">
 
                                                                 <label for="lastName"><b>Last name</b></label>
-                                                                <input id="editLastName"
+                                                                <input id="editLastName" required
                                                                        class="form-control"
                                                                        placeholder="Last name"
                                                                        th:name="lastName"
                                                                        th:type="text">
 
                                                                 <label for="age"><b>Age</b></label>
-                                                                <input id="editAge"
+                                                                <input id="editAge" required
                                                                        class="form-control"
                                                                        placeholder="Age"
                                                                        th:name="age"
                                                                        th:type="text">
 
                                                                 <label for="email"><b>Email</b></label>
-                                                                <input id="editEmail"
+                                                                <input id="editEmail" required
                                                                        class="form-control"
                                                                        placeholder="Email"
                                                                        th:name="email"
                                                                        th:type="text">
 
                                                                 <label for="password"><b>Password</b></label>
-                                                                <input id="editPpassword"
+                                                                <input id="editPpassword" required
                                                                        class="form-control"
                                                                        placeholder="Password"
                                                                        th:name="password"
                                                                        th:type="password">
 
+
                                                                 <label class="container-fluid col-6"
                                                                        for="updateUserRoles">
                                                                     <strong>Role</strong>
-                                                                    <select id="updateUserRoles" class="form-select"
-                                                                            name="roles_${user.getId()}" multiple
-                                                                            size="2">
+                                                                    <select id="updateUserRoles"
+                                                                            class="form-select"
+                                                                            name="roles"
+                                                                            multiple size="2">
                                                                         <option th:each="role: ${roles}"
-                                                                                th:value="${role.getId()}"
-                                                                                th:selected="${user.getRoles().contains(role)}"
-                                                                                th:text="${role.getName().substring(role.getName().indexOf('_')+1)}">
+                                                                                th:value="${role.getId()}">
+                                                                            <th:block
+                                                                                    th:text="${role.getName().substring(role.getName().indexOf('_')+1)}">
+                                                                            </th:block>
                                                                         </option>
                                                                     </select>
                                                                 </label>
@@ -233,7 +237,7 @@
                                                 <h1 class="modal-title fs-5" id="deleteUserModal">Delete user</h1>
 
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Закрыть"></button>
+                                                        aria-label="Close-label"></button>
                                             </div>
 
                                             <div class="modal-body">
@@ -326,14 +330,12 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-
 
             <!--2 ТАБ-->
             <div id="new-users" class="tab-content">
