@@ -5,7 +5,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -13,36 +16,24 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "age")
     private int age;
 
-    @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
     private String email;
 
-            @ManyToMany
-        @JoinTable(name = "users_roles",
-                joinColumns = @JoinColumn(name = "user_id"),
-                inverseJoinColumns = @JoinColumn(name = "role_id"))
-//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-//            CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.LAZY)
-//    @JoinTable(name = "users_roles",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id")) // TODO Комменты
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public User() {
@@ -57,16 +48,6 @@ public class User implements UserDetails {
         this.email = email;
         this.roles = roles;
     }
-
-//    public void addRoleToUser(Role role) {
-//        if (this.roles == null) {
-//            this.roles = new HashSet<>();
-//        }
-//
-//        if (!this.roles.contains(role)) {
-//            this.roles.add(role);
-//        }
-//    }
 
     public Long getId() {
         return id;

@@ -58,11 +58,3 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 }
-
-
-
-
-
-//• Зачем нужны аннотации Column? Убери их в местах, где они ничего не меняют
-//
-//• Вместо @PathVariable используй @RequestParam
