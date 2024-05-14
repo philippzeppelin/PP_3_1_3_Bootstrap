@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String showUserDetails(Object target, Model model, Principal principal) {
+    public String showUserDetails(Model model, Principal principal) {
         String username = principal.getName();
         User user = userService.findUserByUsername(username);
 

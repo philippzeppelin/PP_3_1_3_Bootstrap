@@ -32,7 +32,7 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
-    public String showUser(@PathVariable("id") long id, Model model) {
+    public String showUser(@RequestParam("id") long id, Model model) {
         model.addAttribute("user", userService.findUserById(id));
 
         return "admin/show";
@@ -53,21 +53,21 @@ public class AdminController {
 
     @PatchMapping("/{id}")
     public String updateUser(@ModelAttribute("user") User updatedUser,
-                             @PathVariable("id") long id) {
+                             @RequestParam("id") long id) {
         userService.update(id, updatedUser);
 
         return "redirect:/admin";
     }
 
     @GetMapping("/{id}/edit")
-    public String showEditUserForm(Model model, @PathVariable("id") long id) {
+    public String showEditUserForm(Model model, @RequestParam("id") long id) {
         model.addAttribute("user", userService.findUserById(id));
 
         return "admin/edit";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable("id") long id) {
+    public String deleteUser(@RequestParam("id") long id) {
         userService.deleteUser(id);
 
         return "redirect:/admin";
