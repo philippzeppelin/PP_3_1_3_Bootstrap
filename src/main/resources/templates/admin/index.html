@@ -107,6 +107,7 @@
                                     <thead>
                                     <tr>
                                         <th scope="col">ID</th>
+                                        <th scope="col">Username</th>
                                         <th scope="col">First Name</th>
                                         <th scope="col">Last Name</th>
                                         <th scope="col">Age</th>
@@ -120,6 +121,7 @@
                                     <tbody>
                                     <tr th:each="user : ${users}">
                                         <td th:text="${user.getId()}"></td>
+                                        <td th:text="${user.getUsername()}"></td>
                                         <td th:text="${user.getFirstName()}"></td>
                                         <td th:text="${user.getLastName()}"></td>
                                         <td th:text="${user.getAge()}"></td>
@@ -164,6 +166,13 @@
                                                                             <input type="email" class="form-control"
                                                                                    id="userId">
                                                                         </div>
+
+                                                                        <label for="username"><b>Username</b></label>
+                                                                        <input id="editUsername" required
+                                                                               class="form-control"
+                                                                               placeholder="Username"
+                                                                               th:name="username"
+                                                                               th:type="text">
 
                                                                         <label for="firstName"><b>First name</b></label>
                                                                         <input id="editFirstName" required
@@ -275,6 +284,14 @@
                                                                                    id="deleteUserId">
                                                                         </div>
 
+                                                                        <label for="username"><b>Username</b></label>
+                                                                        <input id="deleteUsername"
+                                                                               class="form-control"
+                                                                               placeholder="Username"
+                                                                               th:name="username"
+                                                                               th:type="text"
+                                                                               disabled>
+
                                                                         <label for="firstName"><b>First name</b></label>
                                                                         <input id="deleteUserFirstName"
                                                                                class="form-control"
@@ -376,6 +393,13 @@
                                                   th:action="@{/admin}"
                                                   th:object="${user}">
 
+                                                <label for="username"><b>Username</b></label>
+                                                <input id="username" required
+                                                       class="form-control"
+                                                       placeholder="Username"
+                                                       th:name="username"
+                                                       th:type="text">
+
                                                 <label for="firstName"><b>First name</b></label>
                                                 <input id="firstName" required
                                                        class="form-control"
@@ -452,6 +476,7 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">ID</th>
+                                    <th scope="col">Username</th>
                                     <th scope="col">First Name</th>
                                     <th scope="col">Last Name</th>
                                     <th scope="col">Age</th>
@@ -463,6 +488,7 @@
                                 <tbody>
                                 <tr>
                                     <td th:text="${user.getId()}"></td>
+                                    <td th:text="${user.getUsername()}"></td>
                                     <td th:text="${user.getFirstName()}"></td>
                                     <td th:text="${user.getLastName()}"></td>
                                     <td th:text="${user.getAge()}"></td>
