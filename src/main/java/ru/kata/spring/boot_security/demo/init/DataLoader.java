@@ -2,10 +2,10 @@ package ru.kata.spring.boot_security.demo.init;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.entities.User;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.util.Set;
@@ -13,16 +13,19 @@ import java.util.Set;
 @Component
 public class DataLoader implements CommandLineRunner {
     private UserService userService;
-    private PasswordEncoder passwordEncoder;
+    private RoleService roleService;
 
     @Autowired
-    public DataLoader(UserService userService, PasswordEncoder passwordEncoder) {
+    public DataLoader(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        Role adminRole = new Role("ROLE_ADMIN");
+        Role userRole = new Role("ROLE_USER");
+
         User admin = new User(
                 "admin",
                 "admin",
@@ -30,7 +33,7 @@ public class DataLoader implements CommandLineRunner {
                 "admin",
                 "admin",
                 "admin@mail.com",
-                Set.of(new Role(1L, "ROLE_ADMIN"))
+                Set.of(adminRole, userRole)
         );
 
         User user = new User(
@@ -40,10 +43,13 @@ public class DataLoader implements CommandLineRunner {
                 "user",
                 "user",
                 "user@mail.com",
-                Set.of(new Role(2L, "ROLE_USER"))
+                Set.of(userRole)
         );
 
         userService.deleteAllUsers();
+
+        roleService.saveRole(adminRole);
+        roleService.saveRole(userRole);
 
         userService.saveUser(admin);
         userService.saveUser(user);

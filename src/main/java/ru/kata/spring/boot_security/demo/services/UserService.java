@@ -9,8 +9,6 @@ import java.util.List;
 public interface UserService {
     List<User> findAll();
 
-    User findUserById(long id);
-
     void saveUser(User user);
 
     void update(long id, User updatedUser);

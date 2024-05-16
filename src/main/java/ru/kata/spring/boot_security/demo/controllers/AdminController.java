@@ -31,18 +31,6 @@ public class AdminController {
         return "admin/index";
     }
 
-    @GetMapping("/{id}")
-    public String showUser(@RequestParam("id") long id, Model model) {
-        model.addAttribute("user", userService.findUserById(id));
-
-        return "admin/show";
-    }
-
-    @GetMapping("/new")
-    public String showNewUserForm(@ModelAttribute("user") User user) {
-        return "admin/new";
-    }
-
     @PostMapping()
     public String addNewUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
@@ -57,13 +45,6 @@ public class AdminController {
         userService.update(id, updatedUser);
 
         return "redirect:/admin";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String showEditUserForm(Model model, @RequestParam("id") long id) {
-        model.addAttribute("user", userService.findUserById(id));
-
-        return "admin/edit";
     }
 
     @DeleteMapping("/{id}")

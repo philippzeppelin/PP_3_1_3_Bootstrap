@@ -10,11 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
-import ru.kata.spring.boot_security.demo.security.UserEntityDetails;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,12 +29,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
-    }
-
-    @Override
-    public User findUserById(long id) {
-        Optional<User> foundUser = userRepository.findById(id);
-        return foundUser.orElse(null);
     }
 
     @Override
@@ -75,7 +67,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         Hibernate.initialize(user.getRoles());
 
-        return new UserEntityDetails(user);
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getRoles()
+        );
     }
 
     @Transactional

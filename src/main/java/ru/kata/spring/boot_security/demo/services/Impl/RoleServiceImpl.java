@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class RoleServiceImpl implements RoleService {
+
+
     private final RoleRepository roleRepository;
 
     @Autowired
@@ -22,5 +24,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> getRoleSet() {
         return roleRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public void saveRole(Role role) {
+        roleRepository.save(role);
     }
 }
